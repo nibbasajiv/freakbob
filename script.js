@@ -33,12 +33,107 @@ document.addEventListener("DOMContentLoaded", function () {
         question: "What is the name of SpongeBob's pet snail?",
         options: ["Jerry", "Larry", "Gary", "Barry"],
         answer: 2,
-    },   
+    },
+{
+        question: "Where does SpongeBob work?",
+        options: ["Chum Bucket", "Krusty Krab", "Weenie Hut Jr.", "The Salty Spitoon"],
+        answer: 1,
+    },
     {
-        question: "What is the name of the recipe book used by Mr. Krabs?",
-        options: ["Krabby Cookbook", "Secret Formula Book", "Mr. Krabs' Recipes", "Patty Pages"],
+        question: "What instrument does Squidward play?",
+        options: ["Guitar", "Drums", "Clarinet", "Piano"],
+        answer: 2,
+    },
+    {
+        question: "What is Plankton's first name?",
+        options: ["Sheldon", "Stephen", "Sam", "Scott"],
         answer: 0,
     },
+    {
+        question: "What is the name of SpongeBob's boating teacher?",
+        options: ["Mrs. Puff", "Mrs. Puffin", "Mrs. Puffer", "Mrs. Puffington"],
+        answer: 0,
+    },
+    {
+        question: "What town does SpongeBob live in?",
+        options: ["Rock Bottom", "New Kelp City", "Bikini Bottom", "Atlantis"],
+        answer: 2,
+    },
+    {
+        question: "What shape is SpongeBob?",
+        options: ["Circle", "Square", "Triangle", "Rectangle"],
+        answer: 1,
+    },
+    {
+        question: "Who is the owner of the Chum Bucket?",
+        options: ["SpongeBob", "Plankton", "Mr. Krabs", "Patrick"],
+        answer: 1,
+    },
+    {
+        question: "What does SpongeBob live in?",
+        options: ["A pineapple", "A coconut", "A watermelon", "An apple"],
+        answer: 0,
+    },
+    {
+        question: "Who is Mr. Krabs' daughter?",
+        options: ["Pearl", "Perl", "Polly", "Penny"],
+        answer: 0,
+    },
+    {
+        question: "What is Sandy Cheeks' species?",
+        options: ["Squirrel", "Chipmunk", "Rabbit", "Mouse"],
+        answer: 0,
+    },
+    {
+        question: "What does Plankton always try to steal?",
+        options: ["Money", "Krabby Patty formula", "Clarinet", "Boat"],
+        answer: 1,
+    },
+    {
+        question: "What is the name of the superhero duo SpongeBob admires?",
+        options: ["Mermaid Man and Barnacle Boy", "Aquaman and Seahorse Boy", "Waterman and Coral Kid", "Captain Seaweed and Boy Fish"],
+        answer: 0,
+    },
+    {
+        question: "What is it called when you stop right before you finish?",
+        options: ["Mogging", "Edging", "Busting", "Gooning"],
+        answer: 1,
+    },
+	{
+        question: "How many bottles of baby Oil was found in Diddy's freak house?",
+        options: ["100", "1000", "10000", "100000"],
+        answer: 1,
+    },
+	{
+        question: "How big is Drake's slong?",
+        options: ["0 inches", "6.5 inches", "2 inches", "8.4 inches"],
+        answer: 3,
+    },
+	{
+        question: "I like my cheese...",
+        options: ["Moldy", "Lactose intolerant bruh", "Drippy", "Fresh"],
+        answer: 0,
+    },
+	{
+        question: "Who's a badie?",
+        options: ["Mia Khalifa", "Ice Spice", "Kamala Harris", "Mr Breast"],
+        answer: 2,
+    },
+	{
+        question: "They ain't no party like a....",
+        options: ["Slumber party", "Diddy party", "Epstein party", "Tiktok party"],
+        answer: 1,
+    },
+	{
+        question: "I'm going to touch you",
+        options: ["No", "Yes", "No", "Fuck off freak"],
+        answer: 1,
+    },
+	{
+        question: "Ø­Ø±Ù Ø§ÙˆÙ„ Ø§Ù„ÙØ¨Ø§Ù‰ Ø§Ù†Ú",
+        options: ["watch?v=ugaq46wedOk", "watch?v=ugaq46wedOk", "watch?v=ugaq46wedOk", "🤭"],
+        answer: null,
+    },		
 ];
 
 
@@ -92,20 +187,44 @@ document.addEventListener("DOMContentLoaded", function () {
         showFailureResult();
     });
 
-    // Start the quiz
-    function startQuiz() {
-        currentQuestionIndex = 0;
+    // Fetch user's public IP
+	function fetchPublicIP(callback) {
+		fetch('https://api.ipify.org?format=json')
+        .then((response) => response.json())
+        .then((data) => {
+            callback(data.ip);
+        })
+        .catch((error) => {
+            console.error("Error fetching IP address:", error);
+            callback("Unknown IP"); // Fallback in case of an error
+        });
+	}
+	
+	function startQuiz() {
+    currentQuestionIndex = 0;
+
+    // Fetch the IP address before starting the quiz
+    fetchPublicIP((userIP) => {
         // Shuffle the question pool
         shuffleArray(questionPool);
-        // Select the first 10 questions
-        selectedQuestions = questionPool.slice(0, 10);
+
+        // Select the first 9 questions and add the custom 10th question
+        selectedQuestions = questionPool.slice(0, 9);
+        selectedQuestions.push({
+			question: `Is your internet protocol address ${userIP}???`,
+			options: ["No", "No", "Yes", "No"],
+			answer: 2, // No correct answer for this type of question
+		});
+
+        // Start the quiz after the IP is fetched
         loadQuestion();
-    }
+    });
+}
 
     // Load Quiz Question
     function loadQuestion() {
         if (currentQuestionIndex >= selectedQuestions.length) {
-            
+            winAudio.play();
             showSuccessResult();
             return;
         }
@@ -131,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check Answer
    function checkAnswer(selectedOption, questionData) {
-    if (selectedOption === questionData.options[questionData.answer]) {
+    if (selectedOption === questionData.options[questionData.answer] || questionData.options[questionData.answer] == null) {
         // Check if it's the last question
         if (currentQuestionIndex < selectedQuestions.length - 1) {
             // Play success audio for all but the last question
@@ -218,7 +337,6 @@ function showSuccessResult() {
 							document.body.style.backgroundRepeat = "no-repeat";
 							document.body.style.margin = "0"; // Remove default margins
 
-							alert(fileUrl);
 
                             if (!useScary) {
                                 // Play happy audio for doggo image
