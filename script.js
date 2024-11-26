@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const ringtone = document.getElementById("ringtone");
     const activeCallAudio = document.getElementById("active-call-audio");
     const successAudio = document.getElementById("success-audio");
+	const scattAudio = document.getElementById("scatt-audio");
     const winAudio = document.getElementById("win-audio");
 
     let currentQuestionIndex = 0;
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	{
         question: "I like my cheese...",
         options: ["Moldy", "Lactose intolerant bruh", "Drippy", "Fresh"],
-        answer: 0,
+        answer: 2,
     },
 	{
         question: "Who's a badie?",
@@ -264,6 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentQuestionIndex++;
         loadQuestion();
     } else {
+		 // Play the audio simultaneously with image load
         showFailureResult();
     }
 }
@@ -365,14 +367,6 @@ function showSuccessResult() {
     });
 }
 
-
-
-
-
-
-
-
-
     // Show Failure Result
     function showFailureResult() {
     // Hide all other screens
@@ -416,11 +410,8 @@ function showSuccessResult() {
                 document.body.style.margin = "0"; // Remove default margins
                 document.body.style.height = "100vh"; // Ensure body takes full viewport height
 
-                // Play the audio simultaneously with image load
-                const audio = new Audio('assets/scatt.mp3');
-                audio.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                });
+               const audio = new Audio(scattAudio.src);
+			   audio.play();
 
                 // Create or ensure the merch-banner exists
                 let merchBanner = document.getElementById('merch-banner');
