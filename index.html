@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreakBob.org</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    <div id="overlay">
+        <p>Tap to continue</p>
+    </div>
+    <div id="content">
+        <div id="call-screen">
+            <div class="mock-iphone">
+                <div class="call-header">𝕱𝓻𝓮𝜶𝒌𝒃𝞸𝒃</div>
+                <div class="call-subheader">Mobile</div>
+                <div class="freakbob-image"></div>
+                <div class="buttons">
+                    <button id="accept">Accept</button>
+                    <button id="decline">Decline</button>
+                </div>
+            </div>
+        </div>
+		<div id="yes-no-container" class="hidden">
+			<h2>Do you want to take the Freak Quiz?</h2>
+			<div class="yes-no-buttons">
+				<button id="yes">Yes</button>
+				<button id="no">No</button>
+			</div>
+		</div>
+        <div id="quiz-container" class="hidden">
+			<div id="quiz-question-number"></div>
+			<div id="quiz-question"></div>
+			<div id="quiz-options" class="quiz-options"></div>
+        </div>
+        <div id="result-screen" class="hidden">
+            <div id="result-image"></div>
+            <p id="result-message"></p>
+        </div>
+    </div>
+    <div id="merch-banner">
+        <p>🔥 Explore FreakBob Merch! 🔥 <a href="https://examplemerchstore.com" target="_blank">Shop Now</a></p>
+    </div>
+    <audio id="ringtone" src="assets/calling.mp3" loop></audio>
+    <audio id="active-call-audio" src="assets/spongebob_audio.mp3"></audio>
+    <audio id="success-audio" src="assets/goodboy.mp3"></audio>
+    <audio id="win-audio" src="assets/win.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>

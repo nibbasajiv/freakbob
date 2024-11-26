@@ -1,0 +1,269 @@
+body {
+    font-family: 'Comic Sans MS', sans-serif;
+    background-color: #87ceeb;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.bubbles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: bubble-rise 10s infinite ease-in-out;
+}
+
+.bubble:nth-child(1) { left: 10%; animation-delay: 0s; }
+.bubble:nth-child(2) { left: 30%; animation-delay: 2s; }
+.bubble:nth-child(3) { left: 50%; animation-delay: 4s; }
+.bubble:nth-child(4) { left: 70%; animation-delay: 6s; }
+.bubble:nth-child(5) { left: 90%; animation-delay: 8s; }
+
+@keyframes bubble-rise {
+    0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1.2);
+        opacity: 0;
+    }
+}
+
+#content {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    height: calc(100% - 60px);
+}
+
+.mock-iphone {
+    width: 320px;
+    height: 550px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 25px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.call-header {
+    background: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.call-subheader {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 5px;
+    color: gray;
+}
+
+.freakbob-image {
+    flex-grow: 1;
+    background: url('assets/freakbob.png') no-repeat center center;
+    background-size: cover;
+    margin: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s, background 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#accept {
+    background: green;
+    color: white;
+}
+
+#decline {
+    background: red;
+    color: white;
+}
+
+#merch-banner {
+    width: 100%;
+    text-align: center;
+    background-color: #ff5722;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+#quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Fancy title for the quiz */
+#quiz-title {
+    font-size: 36px;
+    color: #000080; /* Navy color to stand out */
+    margin-bottom: 10px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+/* Question number styling */
+#quiz-question-number {
+    font-size: 24px;
+    color: #000;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Quiz question styling */
+#quiz-question {
+    font-size: 28px;
+    color: #000;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 1.4;
+}
+
+/* Quiz options grid */
+.quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Quiz option buttons */
+.quiz-options button {
+    background-color: #FFD700; /* Gold color for buttons */
+    color: #000;
+    padding: 15px;
+    font-size: 20px;
+    font-family: 'Comic Sans MS', sans-serif;
+    border: 2px solid #DAA520; /* Goldenrod border */
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    width: 45%; /* Two buttons per row */
+    box-sizing: border-box;
+}
+
+/* Hover effect for option buttons */
+.quiz-options button:hover {
+    background-color: #F0E68C; /* Khaki color on hover */
+    transform: translateY(-3px);
+}
+
+/* Adjustments for small screens */
+@media (max-width: 500px) {
+    .quiz-options button {
+        width: 100%;
+    }
+}
+
+/* Yes/No buttons styling */
+.yes-no-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.yes-no-buttons button {
+    width: 140px;
+    font-size: 20px;
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ADD8E6; /* Light blue */
+    color: #000;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.yes-no-buttons button:hover {
+    background-color: #87CEEB; /* Sky blue on hover */
+    transform: translateY(-3px);
+}
+
+
+
+/* Optional: Style adjustments for consistency */
+button {
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
+h2 {
+    font-family: 'Comic Sans MS', sans-serif;
+}
