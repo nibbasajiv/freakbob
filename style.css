@@ -144,15 +144,19 @@ button:hover {
 }
 
 #merch-banner {
-    width: 100%;
+    position: fixed; /* Ensure the banner stays at the top while scrolling */
+    top: 0; /* Position it at the very top of the page */
+    left: 0; /* Align to the left of the viewport */
+    width: 100%; /* Make it span the entire width */
     text-align: center;
     background-color: #ff5722;
     color: white;
     padding: 10px;
     font-size: 18px;
     font-weight: bold;
-    z-index: 2;
+    z-index: 9999; /* Ensure it stays above other elements */
 }
+
 
 .hidden {
     display: none !important;
@@ -230,6 +234,22 @@ button:hover {
     .quiz-options button {
         width: 100%;
     }
+}
+
+/* Container for the question and buttons */
+#yes-no-container {
+    text-align: center; /* Center-align text and buttons within the container */
+    padding: 20px; /* Add some padding for spacing */
+}
+
+/* Styling for the question text */
+#yes-no-container h2 {
+    margin: 0 auto 20px auto; /* Center the text and add spacing below */
+    max-width: 90%; /* Limit the width to prevent awkward wrapping */
+    line-height: 1.5; /* Improve readability */
+    font-size: 24px; /* Adjust font size for better visibility */
+    text-align: center; /* Ensure the text itself is centered */
+    word-wrap: break-word; /* Handle long words */
 }
 
 /* Yes/No buttons styling */

@@ -401,56 +401,74 @@ function showSuccessResult() {
             // Preload the image to ensure it's loaded before setting as background
             const img = new Image();
             img.src = randomImage;
+			const audio = new Audio(scattAudio.src);
+			audio.play();
             img.onload = () => {
-                // Set the background image to cover the entire page
-                document.body.style.backgroundImage = `url('${randomImage}')`;
-                document.body.style.backgroundSize = "cover";
-                document.body.style.backgroundPosition = "center";
-                document.body.style.backgroundRepeat = "no-repeat";
-                document.body.style.margin = "0"; // Remove default margins
-                document.body.style.height = "100vh"; // Ensure body takes full viewport height
+    // Set the background image to cover the entire page
+    document.body.style.backgroundImage = `url('${randomImage}')`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.margin = "0"; // Remove default margins
+    document.body.style.height = "100vh"; // Ensure body takes full viewport height
+    document.body.style.overflow = "hidden"; // Prevent extra scrollbars
 
-               const audio = new Audio(scattAudio.src);
-			   audio.play();
+    // Add media query for mobile devices
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = `
+        @media (max-width: 768px) {
+            body {
+                background-size: contain; /* Adjust for mobile screens */
+                background-attachment: fixed; /* Keeps the background fixed in place */
+            }
 
-                // Create or ensure the merch-banner exists
-                let merchBanner = document.getElementById('merch-banner');
-                if (!merchBanner) {
-                    merchBanner = document.createElement('div');
-                    merchBanner.id = "merch-banner";
-                    merchBanner.innerHTML = `
-                        <p>
-                            🔥 Explore FreakBob Merch! 🔥 
-                            <a href="https://examplemerchstore.com" target="_blank">Shop Now</a>
-                        </p>
-                    `;
-                    // Style the merch-banner
-                    merchBanner.style.position = "fixed";
-                    merchBanner.style.bottom = "0";
-                    merchBanner.style.width = "100%";
-                    merchBanner.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-                    merchBanner.style.color = "#fff";
-                    merchBanner.style.textAlign = "center";
-                    merchBanner.style.padding = "15px 0";
-                    merchBanner.style.fontSize = "1.2em";
-                    merchBanner.style.zIndex = "1000"; // Ensure it stays on top
-                    merchBanner.style.boxShadow = "0 -2px 5px rgba(0,0,0,0.3)";
-                    
-                    // Optional: Add hover effects to the link
-                    const link = merchBanner.querySelector('a');
-                    link.style.color = "#ffcc00";
-                    link.style.textDecoration = "underline";
-                    link.style.transition = "color 0.3s";
-                    link.addEventListener('mouseover', () => {
-                        link.style.color = "#ffffff";
-                    });
-                    link.addEventListener('mouseout', () => {
-                        link.style.color = "#ffcc00";
-                    });
+            #merch-banner {
+                font-size: 1em; /* Adjust font size for mobile */
+                padding: 10px 0; /* Smaller padding on mobile */
+            }
+        }
+    `;
+    document.head.appendChild(styleTag);
 
-                    document.body.appendChild(merchBanner);
-                }
-            };
+    // Create or ensure the merch-banner exists
+    let merchBanner = document.getElementById('merch-banner');
+    if (!merchBanner) {
+        merchBanner = document.createElement('div');
+        merchBanner.id = "merch-banner";
+        merchBanner.innerHTML = `
+            <p>
+                🔥 Explore FreakBob Merch! 🔥 
+                <a href="https://examplemerchstore.com" target="_blank">Shop Now</a>
+            </p>
+        `;
+        // Style the merch-banner
+        merchBanner.style.position = "fixed";
+        merchBanner.style.bottom = "0";
+        merchBanner.style.width = "100%";
+        merchBanner.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+        merchBanner.style.color = "#fff";
+        merchBanner.style.textAlign = "center";
+        merchBanner.style.padding = "15px 0";
+        merchBanner.style.fontSize = "1.2em";
+        merchBanner.style.zIndex = "1000"; // Ensure it stays on top
+        merchBanner.style.boxShadow = "0 -2px 5px rgba(0,0,0,0.3)";
+        
+        // Optional: Add hover effects to the link
+        const link = merchBanner.querySelector('a');
+        link.style.color = "#ffcc00";
+        link.style.textDecoration = "underline";
+        link.style.transition = "color 0.3s";
+        link.addEventListener('mouseover', () => {
+            link.style.color = "#ffffff";
+        });
+        link.addEventListener('mouseout', () => {
+            link.style.color = "#ffcc00";
+        });
+
+        document.body.appendChild(merchBanner);
+    }
+};
+
 
             img.onerror = () => {
                 console.error('Failed to load the image:', randomImage);
