@@ -163,6 +163,7 @@ function showSuccessResult() {
     // Play the win audio and wait for it to finish
     winAudio.play().then(() => {
         winAudio.addEventListener("ended", () => {
+            resultMessage.textContent = "";
             // Determine which JSON file to fetch
             const jsonFile = useScary ? '/assets/scary.json' : '/assets/doggos.json';
             const baseUrl = useScary ? '' : 'https://random.dog/';
@@ -184,8 +185,8 @@ function showSuccessResult() {
                         const fileUrl = baseUrl + randomFile;
 
                         // Clear previous content
-                        resultImage.innerHTML = ''; 
-                        resultImage.style.backgroundImage = ''; 
+                        resultImage.innerHTML = '';
+                        resultImage.style.backgroundImage = '';
 
                         // Check if the file is an image or video
                         if (fileUrl.endsWith('.mp4')) {
@@ -196,17 +197,35 @@ function showSuccessResult() {
                             videoElement.autoplay = true;
                             videoElement.loop = true;
 
+                            if (!useScary) {
+                                // Mute the video and play happy audio for doggos
+                                videoElement.muted = true;
+
+                               const happyAudio = new Audio('/assets/happy.mp3');
+								 happyAudio.loop = true; // Loop the audio
+                                 happyAudio.play().catch(error => {
+                                 console.error("Error playing happy.mp3:", error);
+                                });
+                            }
+
                             // Append the video to the resultImage container
                             resultImage.appendChild(videoElement);
                         } else {
                             // For images (jpg, png, gif), set as background image
-                            resultImage.style.backgroundImage = `url('${fileUrl}')`;
+							document.body.style.backgroundImage = `url('${fileUrl}')`;
+							document.body.style.backgroundSize = "cover";
+							document.body.style.backgroundPosition = "center";
+							document.body.style.backgroundRepeat = "no-repeat";
+							document.body.style.margin = "0"; // Remove default margins
+
+							alert(fileUrl);
 
                             if (!useScary) {
                                 // Play happy audio for doggo image
                                 const happyAudio = new Audio('/assets/happy.mp3');
-                                happyAudio.play().catch(error => {
-                                    console.error("Error playing happy.mp3:", error);
+                                   happyAudio.loop = true; // Loop the audio
+                                   happyAudio.play().catch(error => {
+                                   console.error("Error playing happy.mp3:", error);
                                 });
                             }
                         }
@@ -227,6 +246,7 @@ function showSuccessResult() {
         console.error("Audio play failed:", error);
     });
 }
+
 
 
 
