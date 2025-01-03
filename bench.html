@@ -45,6 +45,7 @@
     .bubble:nth-child(3) { left: 50%; animation-delay: 4s; }
     .bubble:nth-child(4) { left: 70%; animation-delay: 6s; }
     .bubble:nth-child(5) { left: 90%; animation-delay: 8s; }
+
     @keyframes bubble-rise {
       0% {
         transform: translateY(0) scale(0.5);
@@ -65,7 +66,6 @@
       flex-grow: 1;
       height: calc(100% - 60px);
     }
-
     /* --- END: Your existing site styles --- */
 
     /* --- BEGIN: Additional styles for the bench press game --- */
@@ -160,7 +160,6 @@
       background: #F0E68C;
     }
 
-    /* This container for random fail image overlay */
     #failOverlay {
       display: none; /* Hidden by default */
       position: fixed;
@@ -168,7 +167,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #000; /* fallback if the image doesn’t cover entire screen */
+      background-color: #000;
       z-index: 1000; 
       justify-content: center;
       align-items: center;
@@ -247,6 +246,9 @@
     const barHeight = 20;
     const maxWeightY = canvas.height - 50;
     let maxWeightEver = 0;
+
+    // Background music reference
+    let backgroundMusic = null;
 
     /* -----------------------------------------------------------
        1. Bench Press Drawing
@@ -365,19 +367,16 @@
       // First, get random image from scatt.json
       loadRandomFailImage()
         .then(() => {
-          // Now display the overlay
           failOverlay.style.display = 'flex';
           const failSound = new Audio('assets/scatt.mp3');
           failSound.play();
 
-          // Hide after 3 seconds, then show Game Over screen
           setTimeout(() => {
             failOverlay.style.display = 'none';
             gameOverScreen.style.display = 'flex';
           }, 3000);
         })
         .catch(err => {
-          // If something goes wrong, still show overlay but fallback image
           console.error(err);
           failOverlay.style.display = 'flex';
           const failSound = new Audio('failSound.mp3');
@@ -390,22 +389,33 @@
         });
     }
 
+    /* -----------------------------------------------------------
+       5. Ending the Game
+    ----------------------------------------------------------- */
     function endGame(reason) {
       isGameRunning = false;
       drawBenchPress(true);
       gameOverReasonDisplay.textContent = reason;
+
+      // Stop the background music
+      if (backgroundMusic) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+      }
+
       // Instead of immediate Game Over, show fail overlay
       showFailOverlayAndThenGameOver();
     }
 
+    /* -----------------------------------------------------------
+       6. Restart / Start
+    ----------------------------------------------------------- */
     function restartGame() {
       gameOverScreen.style.display = 'none';
       startGame();
     }
 
-    /* -----------------------------------------------------------
-       5. Start/Reset
-    ----------------------------------------------------------- */
+    // Start (or reset) the game
     function startGame() {
       startButton.style.display = 'none'; 
       weightY = 200;
@@ -416,12 +426,22 @@
       repCountDisplay.textContent = reps;
       weightDisplay.textContent = currentWeight;
       isGameRunning = true;
+
+      // Start (or restart) background music
+      if (backgroundMusic) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+      }
+      backgroundMusic = new Audio('assets/theme.mp3');
+      backgroundMusic.loop = true;
+      backgroundMusic.play();
+
       drawBenchPress();
       updateGame();
     }
 
     /* -----------------------------------------------------------
-       6. Listeners
+       7. Event Listeners
     ----------------------------------------------------------- */
     canvas.addEventListener('mousedown', tapScreen);
     canvas.addEventListener('touchstart', (e) => {
