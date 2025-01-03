@@ -330,7 +330,7 @@
     }
 
     function playSuccessAudio() {
-      const successSound = new Audio('goodboy3.mp3');
+      const successSound = new Audio('assets/goodboy3.mp3');
       successSound.play();
     }
 
@@ -367,7 +367,7 @@
         .then(() => {
           // Now display the overlay
           failOverlay.style.display = 'flex';
-          const failSound = new Audio('scatt.mp3');
+          const failSound = new Audio('assets/scatt.mp3');
           failSound.play();
 
           // Hide after 3 seconds, then show Game Over screen
