@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Freakbob SpongeBob Bench Press Game</title>
+
+  <style>
+    /* --- BEGIN: Your existing site styles --- */
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: #87ceeb;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bubbles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -50px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: bubble-rise 10s infinite ease-in-out;
+    }
+    .bubble:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .bubble:nth-child(2) { left: 30%; animation-delay: 2s; }
+    .bubble:nth-child(3) { left: 50%; animation-delay: 4s; }
+    .bubble:nth-child(4) { left: 70%; animation-delay: 6s; }
+    .bubble:nth-child(5) { left: 90%; animation-delay: 8s; }
+    @keyframes bubble-rise {
+      0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    #content {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      height: calc(100% - 60px);
+    }
+
+    /* --- END: Your existing site styles --- */
+
+    /* --- BEGIN: Additional styles for the bench press game --- */
+    #gameContainer {
+      position: relative;
+      margin-top: 30px;
+      background: url('bench.jpg')
+                  no-repeat center center;
+      background-size: 300px auto;
+      border: 4px solid #FFDA00;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    #gameCanvas {
+      display: block;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.4);
+      border: 2px solid #000;
+      border-radius: 10px;
+    }
+
+    .info {
+      color: #000;
+      font-size: 1.5em;
+      margin: 10px 0;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px #FFF;
+    }
+
+    .button {
+      padding: 15px 30px;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #000;
+      background: #FFD700;
+      border: 2px solid #000;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      font-family: 'Comic Sans MS', sans-serif;
+    }
+    .button:hover {
+      background: #F0E68C;
+      transform: scale(1.05);
+    }
+
+    .game-over-screen {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.2em;
+      z-index: 999;
+    }
+
+    .game-over-title {
+      font-size: 1.8em;
+      color: #ff5555;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    .game-over-text {
+      margin: 10px 0;
+    }
+
+    .restart-button {
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #000;
+      background: #FFD700;
+      border: 2px solid #000;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-family: 'Comic Sans MS', sans-serif;
+    }
+    .restart-button:hover {
+      background: #F0E68C;
+    }
+
+    /* This container for random fail image overlay */
+    #failOverlay {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000; /* fallback if the image doesn’t cover entire screen */
+      z-index: 1000; 
+      justify-content: center;
+      align-items: center;
+    }
+    #failOverlay img {
+      max-width: 80%;
+      max-height: 80%;
+      border: 5px solid #fff;
+      border-radius: 10px;
+    }
+    /* --- END: Additional styles for the bench press game --- */
+  </style>
+</head>
+
+<body>
+  <!-- Bubbles -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <div id="content">
+    <!-- Bench Press Game Container -->
+    <div id="gameContainer">
+      <div class="info">
+        Reps: <span id="repCount">0</span> | Weight: <span id="currentWeight">10</span> lbs
+      </div>
+      <canvas id="gameCanvas" width="500" height="400"></canvas>
+      <button class="button" id="startButton" onclick="startGame()">Start Game</button>
+
+      <div class="game-over-screen" id="gameOverScreen">
+        <div class="game-over-title">Game Over</div>
+        <div class="game-over-text" id="gameOverReason"></div>
+        <div class="game-over-text">
+          Max Weight Ever Lifted: <span id="maxWeightDisplay">0</span> lbs
+        </div>
+        <button class="restart-button" onclick="restartGame()">Restart</button>
+      </div>
+    </div>
+
+    <!-- Fail overlay that displays random image from scatt.json -->
+    <div id="failOverlay">
+      <img id="failOverlayImg" src="" alt="Fail Image" />
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const repCountDisplay = document.getElementById('repCount');
+    const weightDisplay = document.getElementById('currentWeight');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    const gameOverReasonDisplay = document.getElementById('gameOverReason');
+    const maxWeightDisplay = document.getElementById('maxWeightDisplay');
+    const startButton = document.getElementById('startButton');
+
+    // Fail overlay elements
+    const failOverlay = document.getElementById('failOverlay');
+    const failOverlayImg = document.getElementById('failOverlayImg');
+
+    // Detect if device is mobile
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+    let weightY = 200;
+    let speed = 1.5; 
+    let isGameRunning = false;
+    let reps = 0;
+    let currentWeight = 10;
+    let isTouching = false;
+    let liftStartTime = 0;
+    const maxLiftTime = 10000; // 10 seconds
+    const barWidth = 200;
+    const barHeight = 20;
+    const maxWeightY = canvas.height - 50;
+    let maxWeightEver = 0;
+
+    /* -----------------------------------------------------------
+       1. Bench Press Drawing
+    ----------------------------------------------------------- */
+    function drawBenchPress(isFailure = false) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Bench outline
+      ctx.fillStyle = '#444';
+      ctx.fillRect(150, canvas.height - 40, 200, 20);
+
+      // Bar
+      ctx.fillStyle = isFailure ? '#ff0000' : '#ffcc00';
+      ctx.fillRect((canvas.width - barWidth) / 2, weightY, barWidth, barHeight);
+
+      // Support columns
+      ctx.fillStyle = '#888';
+      ctx.fillRect(140, weightY + barHeight, 20, maxWeightY - weightY - barHeight);
+      ctx.fillRect(340, weightY + barHeight, 20, maxWeightY - weightY - barHeight);
+    }
+
+    /* -----------------------------------------------------------
+       2. Game Loop
+    ----------------------------------------------------------- */
+    function updateGame() {
+      if (!isGameRunning) return;
+
+      const elapsedTime = Date.now() - liftStartTime;
+      if (elapsedTime >= maxLiftTime) {
+        endGame("You lifted too slow.");
+        return;
+      }
+
+      weightY += speed;
+      if (weightY >= maxWeightY) {
+        endGame("You failed to lift the weight.");
+        return;
+      }
+
+      drawBenchPress();
+      requestAnimationFrame(updateGame);
+    }
+
+    /* -----------------------------------------------------------
+       3. Tap Screen / Complete Rep
+    ----------------------------------------------------------- */
+    function tapScreen() {
+      if (!isGameRunning || isTouching) return;
+
+      isTouching = true;
+      weightY -= 40; // Lift amount per tap
+
+      // If bar is lifted high enough, increment reps
+      if (weightY < 50) {
+        reps++;
+        repCountDisplay.textContent = reps;
+        weightY = 200;
+        liftStartTime = Date.now();
+
+        if (currentWeight > maxWeightEver) {
+          maxWeightEver = currentWeight;
+          maxWeightDisplay.textContent = maxWeightEver;
+        }
+
+        // Play success audio (overlapping)
+        playSuccessAudio();
+
+        // Increase weight 10..20 lbs
+        const weightIncrease = Math.floor(Math.random() * 11) + 10; 
+        currentWeight += weightIncrease;
+        weightDisplay.textContent = currentWeight;
+
+        // Adjust speed (desktop vs mobile)
+        const baseSpeed = isMobile ? 1.5 : 0.75;
+        speed = baseSpeed + (currentWeight / 100);
+      }
+
+      setTimeout(() => {
+        isTouching = false;
+      }, 100);
+    }
+
+    function playSuccessAudio() {
+      const successSound = new Audio('goodboy3.mp3');
+      successSound.play();
+    }
+
+    /* -----------------------------------------------------------
+       4. Handling Fail (Fetch random image, show overlay, etc.)
+    ----------------------------------------------------------- */
+    // Fetch a random image from scatt.json, set it to failOverlayImg.src
+    function loadRandomFailImage() {
+      return fetch('assets/scatt.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!data.images || !Array.isArray(data.images) || data.images.length === 0) {
+            throw new Error('No images found in scatt.json');
+          }
+          const randomImage = data.images[Math.floor(Math.random() * data.images.length)];
+          failOverlayImg.src = randomImage; // set the random image
+        })
+        .catch(error => {
+          console.error('Error fetching/processing scatt.json:', error);
+          // fallback to some default image
+          failOverlayImg.src = 'failImage.png';
+        });
+    }
+
+    // Show fail overlay, play fail audio, then hide overlay after 3s and show Game Over
+    function showFailOverlayAndThenGameOver() {
+      // First, get random image from scatt.json
+      loadRandomFailImage()
+        .then(() => {
+          // Now display the overlay
+          failOverlay.style.display = 'flex';
+          const failSound = new Audio('scatt.mp3');
+          failSound.play();
+
+          // Hide after 3 seconds, then show Game Over screen
+          setTimeout(() => {
+            failOverlay.style.display = 'none';
+            gameOverScreen.style.display = 'flex';
+          }, 3000);
+        })
+        .catch(err => {
+          // If something goes wrong, still show overlay but fallback image
+          console.error(err);
+          failOverlay.style.display = 'flex';
+          const failSound = new Audio('failSound.mp3');
+          failSound.play();
+
+          setTimeout(() => {
+            failOverlay.style.display = 'none';
+            gameOverScreen.style.display = 'flex';
+          }, 3000);
+        });
+    }
+
+    function endGame(reason) {
+      isGameRunning = false;
+      drawBenchPress(true);
+      gameOverReasonDisplay.textContent = reason;
+      // Instead of immediate Game Over, show fail overlay
+      showFailOverlayAndThenGameOver();
+    }
+
+    function restartGame() {
+      gameOverScreen.style.display = 'none';
+      startGame();
+    }
+
+    /* -----------------------------------------------------------
+       5. Start/Reset
+    ----------------------------------------------------------- */
+    function startGame() {
+      startButton.style.display = 'none'; 
+      weightY = 200;
+      reps = 0;
+      speed = isMobile ? 1.5 : 0.75;
+      currentWeight = 10;
+      liftStartTime = Date.now();
+      repCountDisplay.textContent = reps;
+      weightDisplay.textContent = currentWeight;
+      isGameRunning = true;
+      drawBenchPress();
+      updateGame();
+    }
+
+    /* -----------------------------------------------------------
+       6. Listeners
+    ----------------------------------------------------------- */
+    canvas.addEventListener('mousedown', tapScreen);
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (e.touches.length === 1) {
+        tapScreen();
+      }
+    });
+
+    window.onload = () => {
+      maxWeightDisplay.textContent = maxWeightEver;
+    };
+  </script>
+</body>
+</html>
