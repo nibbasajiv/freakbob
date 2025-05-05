@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bear's Totally Pawesome Page!</title>
+  <style type="text/css">
+    body {
+      background-image: url('bear.jpg');
+      background-repeat: repeat;
+      color: #00FF00;
+      font-family: Comic Sans MS, cursive;
+      text-align: center;
+    }
+    .content {
+      width: 600px;
+      margin: 0 auto;
+      background-color: #000000;
+      border: 5px double #FF00FF;
+      padding: 20px;
+    }
+    .heading {
+      font-size: 36px;
+      color: yellow;
+      text-decoration: blink;
+    }
+    .blink {
+      animation: blinker 1s linear infinite;
+    }
+    @keyframes blinker {
+      50% { opacity: 0; }
+    }
+    img.bear-photo {
+      border: 10px groove hotpink;
+      margin-top: 20px;
+    }
+    .marquee {
+      background-color: #FFFF00;
+      color: #0000FF;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <marquee class="marquee">Welcome to Bear's World!</marquee>
+
+  <div class="content">
+    <div class="heading blink">Meet Bear!</div>
+
+    <p><strong>Birthday:</strong> July 17, 2013</p>
+
+    <p>Hi, I'm <span style="color: cyan;">Bear</span> — a dog with a big heart and an even bigger appetite!</p>
+
+    <p>I live for <b>food</b>. No, really. If you open a bag of chips, I will hear it from a mile away. Pizza crust? Mine. That thing you dropped on the floor 2 days ago? Still mine.</p>
+
+    <p>When I'm not busy being a professional snack hunter, I enjoy long walks where I pretend I'm on a secret mission. I sniff everything. It's all very classified.</p>
+
+    <p>Sometimes I chase squirrels. They never RSVP to my parties though.</p>
+
+    <img class="bear-photo" src="bear.jpg" alt="Bear the dog" width="300" height="300">
+
+    <p>Thanks for visiting my rad site! Don't forget to feed your dog. Or me. Especially me.</p>
+
+    <p><font size="2">© 1999-2025 Bear's Pawtastic Page. All cookies accepted.</font></p>
+  </div>
+
+</body>
+</html>
