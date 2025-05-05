@@ -5,17 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>𝓕𝓻𝓮𝓪𝓴𝓫𝓸𝓫.𝓸𝓻𝓰</title>
     <link rel="stylesheet" href="style.css">
-	<!-- Favicon in .ico format -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    
-    <!-- Favicon in .png format -->
     <link rel="icon" href="favicon.png" type="image/png">
-    
-    <!-- For high-resolution devices -->
     <link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png">
-    
-    <!-- Alternative icon for Apple devices -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
@@ -26,9 +19,18 @@
         <div class="bubble"></div>
         <div class="bubble"></div>
     </div>
+
+    <!-- WARNING OVERLAY -->
     <div id="overlay">
-        <p>Tap to continue</p>
+        <div id="warning-box">
+            <p id="warning-message"></p>
+            <div class="warning-buttons">
+                <button id="proceed-btn">Enter Site</button>
+                <button id="exit-btn">Leave Site</button>
+            </div>
+        </div>
     </div>
+
     <div id="content">
         <div id="call-screen">
             <div class="mock-iphone">
@@ -41,31 +43,54 @@
                 </div>
             </div>
         </div>
-		<div id="yes-no-container" class="hidden">
-			<h2>Do you want to take the Freak Quiz?</h2>
-			<div class="yes-no-buttons">
-				<button id="yes">Yes</button>
-				<button id="no">No</button>
-			</div>
-		</div>
+        <div id="yes-no-container" class="hidden">
+            <h2>Do you want to take the Freak Quiz?</h2>
+            <div class="yes-no-buttons">
+                <button id="yes">Yes</button>
+                <button id="no">No</button>
+            </div>
+        </div>
         <div id="quiz-container" class="hidden">
-			<div id="quiz-question-number"></div>
-			<div id="quiz-question"></div>
-			<div id="quiz-options" class="quiz-options"></div>
+            <div id="quiz-question-number"></div>
+            <div id="quiz-question"></div>
+            <div id="quiz-options" class="quiz-options"></div>
         </div>
         <div id="result-screen" class="hidden">
             <div id="result-image"></div>
             <p id="result-message"></p>
         </div>
     </div>
+
     <div id="merch-banner">
         <p>🔥 Can you out bench freakybob? 🔥 <a href="https://freakbob.org/bench.html" target="_blank">Play freakybench</a></p>
     </div>
+
     <audio id="ringtone" src="assets/calling.mp3" loop></audio>
     <audio id="active-call-audio" src="assets/spongebob_audio.mp3"></audio>
     <audio id="success-audio" src="assets/goodboy.mp3"></audio>
-	<audio id="scatt-audio" src="assets/scatt.mp3"></audio>
+    <audio id="scatt-audio" src="assets/scatt.mp3"></audio>
     <audio id="win-audio" src="assets/win.mp3"></audio>
-    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const encodedMessage = "V0FSTklORzogVGhpcyBzaXRlIGNvbnRhaW5zIHNob2NraW5nIGltYWdlcnkgdGhhdCBtYXkgbm90IGJlIHN1aXRhYmxlIGZvciBjaGlsZHJlbi4gVmlld2VyIGRpc2NyZXRpb24gaXMgYWR2aXNlZC4=";
+        const decodedMessage = atob(encodedMessage);
+        const warningEl = document.getElementById("warning-message");
+
+        // Inject styled WARNING text
+        warningEl.innerHTML = `<span class="warning-highlight">WARNING!!</span> ` + decodedMessage.split("WARNING:")[1];
+
+        document.getElementById("proceed-btn").addEventListener("click", () => {
+            document.getElementById("overlay").style.display = "none";
+            document.body.classList.remove("blurred");
+        });
+
+        document.getElementById("exit-btn").addEventListener("click", () => {
+            window.location.href = "https://www.google.com/search?q=adorable+puppies";
+        });
+
+        document.body.classList.add("blurred");
+    });
+    </script>
 </body>
 </html>
