@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="script.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,26 +72,5 @@
     <audio id="scatt-audio" src="assets/scatt.mp3"></audio>
     <audio id="win-audio" src="assets/win.mp3"></audio>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const encodedMessage = "V0FSTklORzogVGhpcyBzaXRlIGNvbnRhaW5zIHNob2NraW5nIGltYWdlcnkgdGhhdCBJUyBOT1Qgc3VpdGFibGUgZm9yIGNoaWxkcmVuLiBWaWV3ZXIgZGlzY3JldGlvbiBpcyBhZHZpc2VkLg==";
-        const decodedMessage = atob(encodedMessage);
-        const warningEl = document.getElementById("warning-message");
-
-        // Inject styled WARNING text
-        warningEl.innerHTML = `<span class="warning-highlight">WARNING!!</span> ` + decodedMessage.split("WARNING:")[1];
-
-        document.getElementById("proceed-btn").addEventListener("click", () => {
-            document.getElementById("overlay").style.display = "none";
-            document.body.classList.remove("blurred");
-        });
-
-        document.getElementById("exit-btn").addEventListener("click", () => {
-            window.location.href = "https://www.google.com/search?q=adorable+puppies";
-        });
-
-        document.body.classList.add("blurred");
-    });
-    </script>
 </body>
 </html>

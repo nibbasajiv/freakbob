@@ -1,4 +1,42 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const encodedMessage = "V0FSTklORzogVGhpcyBzaXRlIGNvbnRhaW5zIHNob2NraW5nIGltYWdlcnkgdGhhdCBJUyBOT1Qgc3VpdGFibGUgZm9yIGNoaWxkcmVuLiBWaWV3ZXIgZGlzY3JldGlvbiBpcyBhZHZpc2VkLg==";
+    const decodedMessage = atob(encodedMessage);
+    const warningEl = document.getElementById("warning-message");
+    const overlay = document.getElementById("overlay");
+
+    if (warningEl) {
+        warningEl.innerHTML = `<span class="warning-highlight">WARNING:</span> ` + decodedMessage.split("WARNING:")[1];
+    }
+
+    const ringtone = document.getElementById("ringtone");
+
+    const proceedBtn = document.getElementById("proceed-btn");
+    const exitBtn = document.getElementById("exit-btn");
+
+    if (proceedBtn && exitBtn) {
+        proceedBtn.addEventListener("click", () => {
+            document.getElementById("overlay").style.display = "none";
+            document.body.classList.remove("blurred");
+
+            // Show the call screen and start the ringtone
+            const callScreen = document.getElementById("call-screen");
+            callScreen.classList.remove("hidden");
+            ringtone.currentTime = 0;
+            ringtone.play().catch((e) => {
+                console.warn("Audio play was prevented:", e);
+            });
+        });
+
+        exitBtn.addEventListener("click", () => {
+            window.location.href = "https://www.google.com/search?q=adorable+puppies";
+        });
+
+        document.body.classList.add("blurred");
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
     // Element References
     const overlay = document.getElementById("overlay");
     const callScreen = document.getElementById("call-screen");
