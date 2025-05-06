@@ -4,7 +4,7 @@
   <title>Bear's Totally Pawesome Page!</title>
   <style type="text/css">
     body {
-      background-image: url('bear.jpg');
+      background-image: url('bear-bg.jpg');
       background-repeat: repeat;
       color: #00FF00;
       font-family: Comic Sans MS, cursive;
@@ -39,6 +39,40 @@
       font-size: 18px;
     }
   </style>
+
+  <script type="text/javascript">
+    // --- Title Bar Rotator ---
+    var titles = [
+      "WHATT???",
+      "OOOOOWWEE",
+	  "BLUMPPOSSTT",
+	  "PUPPY!!!",
+	  "BEEEEARRRR!!",
+	  "WHAT THE FUCK",
+      "WHO MADE THE DOG????"
+    ];
+    var currentTitle = 0;
+
+    function rotateTitle() {
+      document.title = titles[currentTitle];
+      currentTitle = (currentTitle + 1) % titles.length;
+      setTimeout(rotateTitle, 3000); // Change every 3 seconds
+    }
+
+    // --- Random Bear Image ---
+    function getRandomBearImage() {
+      var maxImages = 7; // Adjust based on number of images you have
+      var imageNumber = Math.floor(Math.random() * maxImages) + 1;
+      return 'bear/bear' + imageNumber + '.jpg';
+    }
+
+    window.onload = function () {
+      rotateTitle();
+      var img = document.getElementById('bear-pic');
+      img.src = getRandomBearImage();
+    };
+  </script>
+
 </head>
 <body>
 
@@ -47,7 +81,7 @@
   <div class="content">
     <div class="heading blink">Meet Bear!</div>
 
-    <p><strong>Birthday:</strong> July 17, 2013</p>
+    <p><strong>Birthday:</strong> July 17, 1993</p>
 
     <p>Hi, I'm <span style="color: cyan;">Bear</span> — a dog with a big heart and an even bigger appetite!</p>
 
@@ -57,11 +91,11 @@
 
     <p>Sometimes I chase squirrels. They never RSVP to my parties though.</p>
 
-    <img class="bear-photo" src="bear.jpg" alt="Bear the dog" width="300" height="300">
+    <img class="bear-photo" id="bear-pic" src="" alt="Bear the dog" width="300" height="300">
 
     <p>Thanks for visiting my rad site! Don't forget to feed your dog. Or me. Especially me.</p>
 
-    <p><font size="2">© 1999-2025 Bear's Pawtastic Page. All cookies accepted.</font></p>
+    <p><font size="2">© 1995 Bear's Pawtastic Page. All cookies accepted.</font></p>
   </div>
 
 </body>
